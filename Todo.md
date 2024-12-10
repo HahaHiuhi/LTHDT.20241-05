@@ -4,7 +4,7 @@
 ## Tasks to be Completed
 
 ### 1. **Move(), Reproduce() and Spawn() Functions Update**:
-   - **Objective**: Modify the `move()`, `reproduce()` and  `spawn() so that organisms can only move and spawn to unoccupied grid cells.
+   - **Objective**: Modify the `move()`, `reproduce()` and  `spawn()` so that organisms can only move and spawn to unoccupied grid cells.
    - **Current Issue**: Organisms are allowed to move and spawn over a grid cell that is already occupied by another organism.
 
 ### 2. **Main Menu**:
