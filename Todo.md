@@ -31,12 +31,15 @@
      - Calculate total energy and average energy of organisms.
      - Display statistics at regular intervals or when requested by the user.
      - Show the current status of the ecosystem (e.g., Alive, Endangered, or Dead).
+     - 
+### 5. **Update diagrams**:
+   - **Objective**: Update use cases and classes diagrams.
 
-### 5. **Cleaner Code**:
+### 6. **Cleaner Code**:
    - **Objective**: Refactor the code for better readability and maintainability.
 
 
-### 6. **Report**:
+### 7. **Report**:
    - **Objective**: Create a comprehensive report consisting of Word document, PowerPoint slides and demo video
 
 
