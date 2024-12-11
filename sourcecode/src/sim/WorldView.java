@@ -10,7 +10,10 @@ import java.util.List;
 import javax.swing.border.Border;
 
 public class WorldView extends JPanel {
-    private World world;
+	
+	private static final long serialVersionUID = -4155452838523149843L;
+	
+	private World world;
 
     public WorldView(World world) {
         this.world = world;

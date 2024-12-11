@@ -6,6 +6,7 @@
 ### 1. **Move(), Reproduce() and Spawn() Functions Update**:
    - **Objective**: Modify the `move()`, `reproduce()` and  `spawn()` so that organisms can only move and spawn to unoccupied grid cells.
    - **Current Issue**: Organisms are allowed to move and spawn over a grid cell that is already occupied by another organism.
+   Should work after merging cong/simulator
 
 ### 2. **Main Menu**:
    - **Objective**: Implement a main menu for the simulation that includes options for starting the simulation, adjusting settings, and viewing statistics.
