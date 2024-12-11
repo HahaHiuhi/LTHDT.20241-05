@@ -9,7 +9,7 @@ public class WorldController {
     private Timer timer;         // Timer to control ticks
     protected volatile boolean isRunning;
 
-    private static final int DEFAULT_TICK_DURATION = 500; // 500 milliseconds (0.5 seconds)
+    private static final int DEFAULT_TICK_DURATION = 500; // 500 milliseconds (2 seconds)
     private int tickDuration = DEFAULT_TICK_DURATION;     // Can be adjusted by the user
     private boolean isUpdating = false; // Flag to track if the world update is in progress
 
@@ -27,7 +27,7 @@ public class WorldController {
 
         // Spawn organisms (10 carnivores in this example, you can adjust this as needed)
         
-            this.world.spawnOrganisms(20, 50, 70); // Example: 10 plants, 5 herbivores, 10 carnivores
+            this.world.spawnOrganisms(50, 30, 5); // Example: 10 plants, 5 herbivores, 10 carnivores
         
 
         // Schedule regular ticks

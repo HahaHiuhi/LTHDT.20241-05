@@ -35,12 +35,12 @@ public class Plant extends Organism {
              world.getOrganisms().add(new Plant(this.posX, this.posY, 100, world));  // Tạo một động vật ăn thịt mới với năng lượng ban đầu
              energy -= 10;  // Trừ năng lượng của động vật mẹ khi sinh sản
          }
-    	 }
+         }
     }
     @Override 
     public synchronized void update() {
     	if (isDead()) {
-              // Ensure dead organisms don't continue with actions like hunting or reproducing
+            this.die();  // Ensure dead organisms don't continue with actions like hunting or reproducing
             return;
         }
     	this.produceEnergy();
