@@ -65,7 +65,7 @@ public class Test {
 
         // Nút điều khiển
         JButton startButton = new JButton("Start Simulation");
-        JButton stopButton = new JButton("Stop Simulation");
+        JButton pauseButton = new JButton("Pause Simulation");
         JButton resumeButton = new JButton("Resume Simulation");
         JButton helpButton = new JButton("Help");
         JButton quitButton = new JButton("Quit");
@@ -78,7 +78,7 @@ public class Test {
         controlPanel.add(labelC);
         controlPanel.add(fieldC);
         controlPanel.add(startButton);
-        controlPanel.add(stopButton);
+        controlPanel.add(pauseButton);
         controlPanel.add(resumeButton);
         controlPanel.add(helpButton);
         controlPanel.add(quitButton);
@@ -127,10 +127,10 @@ public class Test {
             }
         });
 
-        stopButton.addActionListener(new ActionListener() {
+        pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                myController.stopSimulation();
+                myController.pauseSimulation();
                 statsArea.append("Simulation stopped...\n");
             }
         });
@@ -146,7 +146,7 @@ public class Test {
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Help:\nStart - Bắt đầu mô phỏng\nStop - Dừng mô phỏng\nResume - Tiếp tục mô phỏng\nQuit - Thoát chương trình");
+                JOptionPane.showMessageDialog(frame, "Help:\nStart - Bắt đầu mô phỏng\nPause - Dừng mô phỏng\nResume - Tiếp tục mô phỏng\nQuit - Thoát chương trình");
             }
         });
 
