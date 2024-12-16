@@ -20,6 +20,21 @@ public class World {
 		this.state = HEALTHY;
 	}
 
+	// Phương thức trả về số lượng cây (Plants)
+    public long getPlantsCount() {
+        return organisms.stream().filter(o -> o instanceof Plant).count();
+    }
+
+    // Phương thức trả về số lượng động vật ăn cỏ (Herbivores)
+    public long getHerbivoresCount() {
+        return organisms.stream().filter(o -> o instanceof Herbivore).count();
+    }
+
+    // Phương thức trả về số lượng động vật ăn thịt (Carnivores)
+    public long getCarnivoresCount() {
+        return organisms.stream().filter(o -> o instanceof Carnivore).count();
+    }
+
 	public List<Organism> getOrganisms() {
 		return organisms;
 	}

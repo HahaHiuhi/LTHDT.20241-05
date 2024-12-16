@@ -4,7 +4,7 @@ public abstract class Organism {
 
 	public static final int EMPTY = 0, PLANT = 1, HERBIVORE = 2, CARNIVORE = 3;
 
-	protected final int DEAD = 1, ALIVE = 0, CAP = 200;
+	protected final int DEAD = 1, ALIVE = 0, CAP = 300;
 	protected int energy;
 	protected int posX;
 	protected int posY;

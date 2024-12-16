@@ -23,11 +23,43 @@ public class WorldController {
 
     // Start the simulation
     public void startSimulation() {
+        world.restartSimulation();
+        world.setState(1);
         stopSimulation(); // Stop any running timers
 
         // Spawn organisms (10 carnivores in this example, you can adjust this as needed)
         
-            this.world.spawnOrganisms(50, 30, 5); // Example: 10 plants, 5 herbivores, 10 carnivores
+            this.world.spawnOrganisms(20, 70, 5); // Example: 10 plants, 5 herbivores, 10 carnivores
+        
+
+        // Schedule regular ticks
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (world.isDead()) {
+                    stopSimulation(); // Stop when the world is dead
+                    System.out.println("World is dead, simulation stopped.");
+                } else if(!isUpdating) { 
+                    isUpdating = true; // Indicate that an update is in progress
+                    world.update();    // Update the world
+                    view.repaint();; // Update the graphical view (uncomment this line if needed)
+                    isUpdating = false; // Indicate that the update has finished
+                }
+            }
+        }, 0, tickDuration); // First tick runs immediately, then repeats every `tickDuration` milliseconds
+
+        System.out.println("Simulation started with tick duration: " + tickDuration + " ms");
+    }
+
+    public void startSimulation(int numPlant, int numHerbivore, int numCarnivore) {
+        world.restartSimulation();
+        world.setState(1);
+        stopSimulation(); // Stop any running timers
+
+        // Spawn organisms (10 carnivores in this example, you can adjust this as needed)
+        
+            this.world.spawnOrganisms(numPlant, numHerbivore, numCarnivore); // Example: 10 plants, 5 herbivores, 10 carnivores
         
 
         // Schedule regular ticks
@@ -54,7 +86,30 @@ public class WorldController {
     public void stopSimulation() {
         if (timer != null) {
             timer.cancel(); // Cancel the current timer
+            timer = null;
             System.out.println("Simulation stopped.");
+        }
+    }
+
+    // Tiếp tục Timer với một tickDuration mới
+    public void resumeSimulation() {
+        if (timer == null) {  // Chỉ tiếp tục nếu chưa có timer
+            timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    if (world.isDead()) {
+                        stopSimulation();
+                        System.out.println("World is dead, simulation stopped.");
+                    } else if (!isUpdating) {
+                        isUpdating = true;
+                        world.update();
+                        view.repaint();
+                        isUpdating = false;
+                    }
+                }
+            }, 0, tickDuration);
+            System.out.println("Simulation resumed.");
         }
     }
 

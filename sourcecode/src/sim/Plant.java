@@ -31,33 +31,6 @@ public class Plant extends Organism {
 	private int[] dx = { -1, 1, 0, 0 }; // Possible x-direction (left, right)
 	private int[] dy = { 0, 0, -1, 1 }; // Possible y-direction (up, down)
 
-<<<<<<< HEAD
-  
-    
-    @Override 
-    public void reproduce() {
-    	 if (energy > 150  && world.getOrganisms().size() < CAP) {  // Nếu năng lượng đủ, sinh sản
-    		 for (int i = 0; i < birthRate; ++i) {
-             world.getOrganisms().add(new Plant(this.posX, this.posY, 100, world));  // Tạo một động vật ăn thịt mới với năng lượng ban đầu
-             energy -= 10;  // Trừ năng lượng của động vật mẹ khi sinh sản
-         }
-         }
-    }
-    @Override 
-    public synchronized void update() {
-    	if (isDead()) {
-            this.die();  // Ensure dead organisms don't continue with actions like hunting or reproducing
-            return;
-        }
-    	this.produceEnergy();
-    	this.reproduce();
-    	
-    }
-    @Override
-    public String getEmoji() {
-        return "🌱"; // Example emoji for plant
-    }
-=======
 	@Override
 	public void reproduce() {
 		if (energy > 150 && world.getOrganisms().size() < CAP) { // Nếu năng lượng đủ, sinh sản
@@ -106,5 +79,4 @@ public class Plant extends Organism {
 	public String getEmoji() {
 		return "🌱"; // Example emoji for plant
 	}
->>>>>>> 5fde20c36d6340b794deb0ed6ae99ce43952abe9
 }
