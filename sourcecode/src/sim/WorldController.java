@@ -27,6 +27,7 @@ public class WorldController {
         world.restartSimulation();
         world.setState(1);
         stopSimulation(); // Stop any running timers
+        isPaused = false;
 
         // Spawn organisms (10 carnivores in this example, you can adjust this as needed)
         
@@ -59,6 +60,7 @@ public class WorldController {
         world.restartSimulation();
         world.setState(1);
         stopSimulation(); // Stop any running timers
+        isPaused = false;
 
         // Spawn organisms (10 carnivores in this example, you can adjust this as needed)
         
