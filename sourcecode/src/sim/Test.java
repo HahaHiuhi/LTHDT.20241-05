@@ -153,7 +153,16 @@ public class Test {
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                // Hiển thị hộp thoại xác nhận khi nhấn nút Quit
+                int result = JOptionPane.showConfirmDialog(frame, 
+                "Are you sure you want to quit?", 
+                "Confirm Exit", 
+                JOptionPane.YES_NO_OPTION);
+
+                // Nếu người dùng chọn Yes, thoát ứng dụng
+                if (result == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
             }
         });
     }
