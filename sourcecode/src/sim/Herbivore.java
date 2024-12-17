@@ -64,6 +64,7 @@ public class Herbivore extends Animal {
 		if (plant != null && !plant.isDead()) {
 			int dx = plant.posX - this.posX, dy = plant.posY - this.posY;
 			if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1) {
+				world.c[1] += plant.energy / 10;
 				this.energy += plant.energy / 10; // Tăng năng lượng bằng năng lượng động vật ăn cỏ
 				plant.die(); // Động vật ăn cỏ bị tiêu thụ
 				state = ALIVE;
