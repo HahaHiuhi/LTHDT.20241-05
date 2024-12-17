@@ -1,9 +1,9 @@
 package sim;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -27,11 +27,11 @@ public class Main {
 
         // Labels and text fields for P, H, and C
         JLabel labelP = new JLabel("Plant:");
-        JTextField fieldP = new JTextField("0");
+        JTextField fieldP = new JTextField();
         JLabel labelH = new JLabel("Herbivore:");
-        JTextField fieldH = new JTextField("0");
+        JTextField fieldH = new JTextField();
         JLabel labelC = new JLabel("Carnivore:");
-        JTextField fieldC = new JTextField("0");
+        JTextField fieldC = new JTextField();
 
         fieldP.setEditable(true);
         fieldH.setEditable(true);
