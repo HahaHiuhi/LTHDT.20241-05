@@ -9,10 +9,13 @@ import java.util.List;
 
 import javax.swing.border.Border;
 
-public class WorldView extends JPanel {
-    private World world;
+public class WorldRenderer extends JPanel {
+	
+	private static final long serialVersionUID = -4155452838523149843L;
+	
+	private World world;
 
-    public WorldView(World world) {
+    public WorldRenderer(World world) {
         this.world = world;
         setPreferredSize(new Dimension(world.WIDTH * 20, world.HEIGHT * 20)); // scale the grid by cell size
         
@@ -42,11 +45,14 @@ public class WorldView extends JPanel {
         List<Organism> organismsSnapshot = new ArrayList<>(world.getOrganisms());
 
         // Draw the organisms as emojis
-        g.setColor(Color.BLACK);
+       
         for (Organism organism : organismsSnapshot) {
+        	if(organism instanceof Plant)  g.setColor(Color.GREEN);
+        	else if (organism instanceof Herbivore) g.setColor(Color.BLUE);
+        	else if (organism instanceof Carnivore)  g.setColor(Color.RED);
             String emoji = organism.getEmoji();
-            int x = organism.posX * cellWidth;
-            int y = organism.posY * cellHeight;
+            int x = organism.getPosX() * cellWidth;
+            int y = organism.getPosY() * cellHeight;
             g.drawString(emoji, x + cellWidth / 4, y + cellHeight / 2); // Center the emoji in the cell
         }
     }

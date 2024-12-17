@@ -1,20 +1,22 @@
 package sim;
 
+
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class WorldController {
-    private World world;         // The ecosystem object
-    private WorldView view;      // The graphical view
+public class Simulator {
+    private World world;         // The ecosystem world object
+    private WorldRenderer view;      // The graphical view
     private Timer timer;         // Timer to control ticks
     protected volatile boolean isRunning;
 
     private static final int DEFAULT_TICK_DURATION = 500; // 500 milliseconds (0.5 seconds)
     private int tickDuration = DEFAULT_TICK_DURATION;     // Can be adjusted by the user
     private boolean isUpdating = false; // Flag to track if the world update is in progress
+	private boolean isPaused;
 
     // Constructor
-    public WorldController(World world, WorldView view) {
+    public Simulator(World world, WorldRenderer view) {
         this.world = world;
         this.view = view;
         this.timer = new Timer(); // Initialize the timer
@@ -23,11 +25,11 @@ public class WorldController {
 
     // Start the simulation
     public void startSimulation() {
-        stopSimulation(); // Stop any running timers
+        endSimulation(); // Stop any running timers
 
         // Spawn organisms (10 carnivores in this example, you can adjust this as needed)
         
-            this.world.spawnOrganisms(20, 50, 70); // Example: 10 plants, 5 herbivores, 10 carnivores
+            this.world.spawnOrganisms(100,2 , 0); // Example: 10 plants, 5 herbivores, 10 carnivores
         
 
         // Schedule regular ticks
@@ -36,9 +38,9 @@ public class WorldController {
             @Override
             public void run() {
                 if (world.isDead()) {
-                    stopSimulation(); // Stop when the world is dead
+                    endSimulation(); // Stop when the world is dead
                     System.out.println("World is dead, simulation stopped.");
-                } else if(!isUpdating) { 
+                } else if(!isUpdating && !isPaused) { 
                     isUpdating = true; // Indicate that an update is in progress
                     world.update();    // Update the world
                     view.repaint();; // Update the graphical view (uncomment this line if needed)
@@ -51,10 +53,10 @@ public class WorldController {
     }
 
     // Stop the simulation
-    public void stopSimulation() {
+    public void endSimulation() {
         if (timer != null) {
             timer.cancel(); // Cancel the current timer
-            System.out.println("Simulation stopped.");
+            System.out.println("Simulation ended.");
         }
     }
 
@@ -65,13 +67,19 @@ public class WorldController {
         // Add other statistics like total energy, organisms by type, etc.
     }
 
-    // Adjust the tick duration
-    public void setTickDuration(int newTickDuration) {
-        if (newTickDuration <= 0) {
-            throw new IllegalArgumentException("Tick duration must be greater than 0.");
-        }
-        this.tickDuration = newTickDuration;
-        System.out.println("Tick duration set to: " + newTickDuration + " ms");
-        startSimulation(); // Restart simulation with the new tick duration
+  
+    // Pause the simulation (stop the TimerTask from executing)
+    public void pauseSimulation() {
+        isPaused = true;
+        System.out.println("Simulation paused.");
     }
+
+    // Resume the simulation (resume TimerTask execution)
+    public void resumeSimulation() {
+        if (isPaused) {
+            isPaused = false;
+            System.out.println("Simulation resumed.");
+        }
+    }
+
 }

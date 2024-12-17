@@ -5,20 +5,25 @@ import java.util.List;
 import java.util.Random;
 
 public class Herbivore extends Animal {
+	private static final int BIRTH_TIME = 30;
+
 	public Herbivore(int x, int y, int initialEnergy, World world) {
 		super(x, y, initialEnergy, world, Organism.HERBIVORE);
 	}
 
-	private int[] dirX = { -1, 1, 0, 0 }; // Possible x-direction (left, right)
-	private int[] dirY = { 0, 0, -1, 1 }; // Possible y-direction (up, down)
 
 	@Override
 	public void reproduce() {
-		if (this.energy > 120 && world.getOrganisms().size() < CAP) { // Nếu năng lượng đủ, sinh sản
-			Organism partner = world.findNearest(this.posX, this.posY, 2);
-			if (partner != null && !partner.isDead()) {
-				int dx = partner.posX - this.posX, dy = partner.posY - this.posY;
-				if (Math.abs(dx) == 1 && Math.abs(dy) == 1) {
+		if (isHunting()) return;
+		if (birthCooldown > 0) birthCooldown --;
+		else if (this.energy > 120 && world.getOrganisms().size() < world.CAP) { // Nếu năng lượng đủ, sinh sản
+			
+	
+			
+				int[] dirX = { -1, 1, 0, 0 }; // Possible x-direction (left, right)
+				int[] dirY = { 0, 0, -1, 1 }; // Possible y-direction (up, down)
+
+				
 					Random rand = new Random();
 					List<Integer> choices = new ArrayList<Integer>();
 					choices.add(0);
@@ -36,21 +41,24 @@ public class Herbivore extends Animal {
 					} while (!choices.isEmpty() && world.isOccupied(reproduceX, reproduceY));
 
 					if (!world.isOccupied(reproduceX, reproduceY)) {
-						world.addOrganism(new Herbivore(this.posX, this.posY, 100, world)); // Tạo một động vật ăn cỏ
+				
+						world.addOrganism(new Herbivore(reproduceX, reproduceY, 100, world)); // Tạo một động vật ăn cỏ
 																							// mới
 																							// với năng lượng ban đầu
 						this.energy -= 40; // Trừ năng lượng của động vật mẹ khi sinh sản
 						world.occupy(reproduceX, reproduceY, Organism.HERBIVORE);
+						
+						birthCooldown = BIRTH_TIME;
 					}
-				} else
-					move(partner.posX, partner.posY);
-			}
-
-		}
+				} 
+		else move();
+		state = ALIVE;
+			
 	}
 
 	@Override
 	public void hunt() {
+		if (isMating()) return;
 		// Tìm động vật ăn cỏ gần nhất để ăn
 		Organism plant = world.findNearest(this.posX, this.posY, Organism.PLANT);
 		if (plant != null && !plant.isDead()) {
@@ -58,6 +66,7 @@ public class Herbivore extends Animal {
 			if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1) {
 				this.energy += plant.energy / 10; // Tăng năng lượng bằng năng lượng động vật ăn cỏ
 				plant.die(); // Động vật ăn cỏ bị tiêu thụ
+				state = ALIVE;
 			}
 			move(plant.posX, plant.posY);
 		} else

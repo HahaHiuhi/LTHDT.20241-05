@@ -5,36 +5,31 @@ import java.util.List;
 import java.util.Random;
 
 public class Plant extends Organism {
-	private final int energyProducedPerTick = 20; // Năng lượng sản xuất mỗi lần cập nhật (tick)
-	private final int birthRate = 2; // Tỷ lệ sinh sản (số lượng cây con mỗi lần sinh sản)
-
+	private final int ENERGY_PER_TICK = 20; // Năng lượng sản xuất mỗi lần cập nhật (tick)
+	private final int BIRTH_TIME = 10; 
+	
 	// Constructor
 	public Plant(int energy, int posX, int posY, World world) {
 		super(energy, posX, posY, world, Organism.PLANT); // Cây không di chuyển nên tốc độ = 0
+		birthCooldown = BIRTH_TIME;
 
 	}
 
 	// Phương thức sản xuất năng lượng qua quang hợp
 	public void produceEnergy() {
-		this.energy += energyProducedPerTick; // Tăng năng lượng mỗi tick
+		this.energy += ENERGY_PER_TICK; // Tăng năng lượng mỗi tick
 	}
 
-	// Getters and Setters
-	public float getEnergyProducedPerTick() {
-		return energyProducedPerTick;
-	}
 
-	public int getBirthRate() {
-		return birthRate;
-	}
 
-	private int[] dx = { -1, 1, 0, 0 }; // Possible x-direction (left, right)
-	private int[] dy = { 0, 0, -1, 1 }; // Possible y-direction (up, down)
 
 	@Override
 	public void reproduce() {
-		if (energy > 150 && world.getOrganisms().size() < CAP) { // Nếu năng lượng đủ, sinh sản
-			for (int i = 0; i < birthRate; ++i) {
+		if (birthCooldown > 0) birthCooldown --;
+		else if (energy > 150 && world.getOrganisms().size() < world.CAP) { 
+			int[] dx = { -1, 1, 0, 0 }; // Possible x-direction (left, right)
+			int[] dy = { 0, 0, -1, 1 }; // Possible y-direction (up, down)
+		    
 				Random rand = new Random();
 				List<Integer> choices = new ArrayList<Integer>();
 				choices.add(0);
@@ -54,15 +49,14 @@ public class Plant extends Organism {
 				if (!world.isOccupied(reproduceX, reproduceY)) {
 					world.addOrganism(new Plant(100, reproduceX, reproduceY, world)); // Tạo một động vật ăn thịt
 																						// mới
-					// Stuck on this part for a while and I realized the parameter position of
-					// plant aint like others kekw, no wonder it keeps spawning at 100
-					// với năng lượng ban đầu
-					energy -= 10; // Trừ năng lượng của động vật mẹ khi sinh sản
+					
+					energy -= 10; // Trừ năng lượng của cây khi sinh sản
 					world.occupy(reproduceX, reproduceY, Organism.PLANT); // Update world grid
+					birthCooldown = BIRTH_TIME;
 				}
 			}
 		}
-	}
+	
 
 	@Override
 	public synchronized void update() {

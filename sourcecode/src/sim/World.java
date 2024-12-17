@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Random;
 
 public class World {
-	private final int DEAD = 0, HEALTHY = 1;
+	private final int DEAD = 0, HEALTHY = 1, CLEARED = 2;
 
 	public final int WIDTH = 30;
 	public final int HEIGHT = 30;
+	public final int CAP = 700;
 	private List<Organism> organisms;
 	private int[][] worldGrid;
 	private int state;
@@ -34,14 +35,11 @@ public class World {
     public long getCarnivoresCount() {
         return organisms.stream().filter(o -> o instanceof Carnivore).count();
     }
-
+    
 	public List<Organism> getOrganisms() {
 		return organisms;
 	}
 
-	public void setOrganisms(List<Organism> organisms) {
-		this.organisms = organisms;
-	}
 
 	public boolean isDead() {
 		return state == DEAD;
@@ -56,10 +54,7 @@ public class World {
 		this.organisms.addAll(initialOrganisms);
 	}
 
-	public void restartSimulation() {
-		this.state = 0; // Reset state
-		this.organisms.clear(); // Clear all organisms
-	}
+	
 
 	public void update() {
 		if (organisms.isEmpty()) {
@@ -103,19 +98,19 @@ public class World {
 			double distance;
 			if (organism instanceof Plant && type == Organism.PLANT) {
 
-				distance = Math.sqrt(Math.pow(x - organism.posX, 2) + Math.pow(y - organism.posY, 2));
+				distance = Math.sqrt(Math.pow(x - organism.getPosX(), 2) + Math.pow(y - organism.getPosY(), 2));
 				if (distance < minDistance) {
 					minDistance = distance;
 					nearest = organism;
 				}
 			} else if (organism instanceof Herbivore && type == Organism.HERBIVORE) {
 
-				distance = Math.sqrt(Math.pow(x - organism.posX, 2) + Math.pow(y - organism.posY, 2));
+				distance = Math.sqrt(Math.pow(x - organism.getPosX(), 2) + Math.pow(y - organism.getPosY(), 2));
 				if (distance < minDistance) {
 					minDistance = distance;
 					nearest = organism;
 				} else if (organism instanceof Carnivore && type == Organism.CARNIVORE) {
-					distance = Math.sqrt(Math.pow(x - organism.posX, 2) + Math.pow(y - organism.posY, 2));
+					distance = Math.sqrt(Math.pow(x - organism.getPosX(), 2) + Math.pow(y - organism.getPosY(), 2));
 					if (distance < minDistance) {
 						minDistance = distance;
 						nearest = organism;
@@ -176,6 +171,11 @@ public class World {
 
 	public void unoccupy(int x, int y) {
 		worldGrid[x][y] = Organism.EMPTY;
+	}
+	
+	public void clearWorld() {
+		organisms.clear();
+		state = CLEARED;
 	}
 
 }

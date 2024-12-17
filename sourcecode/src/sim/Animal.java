@@ -4,6 +4,8 @@ import java.util.Random;
 
 public abstract class Animal extends Organism implements Moveable {
 
+	
+
 	// Constructor
 	public Animal(int x, int y, int initialEnergy, World world, int type) {
 		super(initialEnergy, x, y, world, type);
@@ -38,7 +40,7 @@ public abstract class Animal extends Organism implements Moveable {
 
 	// Giảm năng lượng do mất năng lượng qua thời gian
 	public void decayEnergy() {
-		this.energy -= 15; // Giảm năng lượng mỗi tick (có thể thay đổi tùy theo mô phỏng)
+		this.energy -= 3; // Giảm năng lượng mỗi tick (có thể thay đổi tùy theo mô phỏng)
 	}
 
 	public abstract void hunt();
@@ -50,7 +52,12 @@ public abstract class Animal extends Organism implements Moveable {
 			this.die(); // Ensure dead organisms don't continue with actions like hunting or reproducing
 			return;
 		}
-
+        if(state == ALIVE) {
+        	Random rand = new Random();
+        	if(energy > 120 ) 
+        	state = rand.nextInt((MATING - HUNTING) + 1) + HUNTING;
+        	else state = HUNTING;
+        }
 		hunt(); // Organism hunts for food. Energy might be gained here.
 		reproduce(); // Reproduction happens if conditions are met (e.g., enough energy)
 	}
@@ -74,5 +81,13 @@ public abstract class Animal extends Organism implements Moveable {
 			move(newX, newY); // Move to the new position
 		}
 	}
-
+      
+	public boolean isHunting() {
+		return this.state == HUNTING ;
+	}
+	
+	public boolean isMating() {
+		return this.state == MATING ;
+	}
+	
 }
