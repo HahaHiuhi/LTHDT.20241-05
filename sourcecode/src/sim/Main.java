@@ -27,11 +27,11 @@ public class Main {
 
         // Labels and text fields for P, H, and C
         JLabel labelP = new JLabel("Plant:");
-        JTextField fieldP = new JTextField();
+        JTextField fieldP = new JTextField("0");
         JLabel labelH = new JLabel("Herbivore:");
-        JTextField fieldH = new JTextField();
+        JTextField fieldH = new JTextField("0");
         JLabel labelC = new JLabel("Carnivore:");
-        JTextField fieldC = new JTextField();
+        JTextField fieldC = new JTextField("0");
 
         fieldP.setEditable(true);
         fieldH.setEditable(true);
@@ -96,7 +96,9 @@ public class Main {
                                 myView.repaint(); // Trigger repaint to update the view
                                 statsArea.setText("Plants: " + myWorld.getPlantsCount() + "\n" +
                                                    "Herbivores: " + myWorld.getHerbivoresCount() + "\n" +
-                                                   "Carnivores: " + myWorld.getCarnivoresCount() + "\n");
+                                                   "Carnivores: " + myWorld.getCarnivoresCount() + "\n" +
+                                                   "Energy visualization: 10%\n" +
+                                                   "Energy efficiency: 3%\n");
                             }
                         });
                     }
