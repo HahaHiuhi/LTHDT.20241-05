@@ -97,8 +97,8 @@ public class Main {
                                 statsArea.setText("Plants: " + myWorld.getPlantsCount() + "\n" +
                                                    "Herbivores: " + myWorld.getHerbivoresCount() + "\n" +
                                                    "Carnivores: " + myWorld.getCarnivoresCount() + "\n" +
-                                                   "Energy visualization: 10%\n" +
-                                                   "Energy efficiency: 3%\n");
+         
+                                                   "Energy efficiency: " + myController.calculateStats() +"%\n");
                             }
                         });
                     }
@@ -129,7 +129,7 @@ public class Main {
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Help:\nStart - Start the simulation\nPause - Pause the simulation\nResume - Resume the simulation\nQuit - Quit the application");
+                JOptionPane.showMessageDialog(frame, "Help:\nStart - Start the simulation\nPause - Pause the simulation\nResume - Resume the simulation\nQuit - Quit the application\nPlants get energy from sunlight\nHerbivores consume plants\nCarnivores consume herbivores\nThe predators only get 10% energy of their preys");
             }
         });
 

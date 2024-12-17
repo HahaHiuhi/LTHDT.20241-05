@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Plant extends Organism {
-	private final int ENERGY_PER_TICK = 20; // Năng lượng sản xuất mỗi lần cập nhật (tick)
+	private final int ENERGY_PER_TICK = 100; // Năng lượng sản xuất mỗi lần cập nhật (tick)
 	private final int BIRTH_TIME = 10; 
 	
 	// Constructor
@@ -18,6 +18,7 @@ public class Plant extends Organism {
 	// Phương thức sản xuất năng lượng qua quang hợp
 	public void produceEnergy() {
 		this.energy += ENERGY_PER_TICK; // Tăng năng lượng mỗi tick
+		world.c[0] += ENERGY_PER_TICK;
 	}
 
 
@@ -26,7 +27,7 @@ public class Plant extends Organism {
 	@Override
 	public void reproduce() {
 		if (birthCooldown > 0) birthCooldown --;
-		else if (energy > 150 && world.getOrganisms().size() < world.CAP) { 
+		else if (world.getOrganisms().size() < world.CAP) { 
 			int[] dx = { -1, 1, 0, 0 }; // Possible x-direction (left, right)
 			int[] dy = { 0, 0, -1, 1 }; // Possible y-direction (up, down)
 		    
@@ -50,7 +51,7 @@ public class Plant extends Organism {
 					world.addOrganism(new Plant(100, reproduceX, reproduceY, world)); // Tạo một động vật ăn thịt
 																						// mới
 					
-					energy -= 10; // Trừ năng lượng của cây khi sinh sản
+	
 					world.occupy(reproduceX, reproduceY, Organism.PLANT); // Update world grid
 					birthCooldown = BIRTH_TIME;
 				}

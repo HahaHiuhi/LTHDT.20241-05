@@ -1,6 +1,7 @@
 package sim;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -14,7 +15,7 @@ public class World {
 	private List<Organism> organisms;
 	private int[][] worldGrid;
 	private int state;
-
+    protected int[] c = new int[3];
 	public World() {
 		this.worldGrid = new int[WIDTH][HEIGHT];
 		this.organisms = new ArrayList<>();
@@ -126,7 +127,7 @@ public class World {
 
 	public void spawnOrganisms(int numPlant, int numHerbivore, int numCarnivore) {
 		Random rand = new Random();
-
+		 Arrays.fill(c, 0);
 		// Spawn plants
 		for (int i = 0; i < numPlant; i++) {
 			generateSpawnPosition(rand);
