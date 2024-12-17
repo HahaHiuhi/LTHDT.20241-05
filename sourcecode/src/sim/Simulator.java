@@ -26,13 +26,6 @@ public class Simulator {
     // Start the simulation
     public void startSimulation() {
         endSimulation(); // Stop any running timers
-
-        // Spawn organisms (10 carnivores in this example, you can adjust this as needed)
-        
-            this.world.spawnOrganisms(100,2 , 0); // Example: 10 plants, 5 herbivores, 10 carnivores
-        
-
-        // Schedule regular ticks
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override

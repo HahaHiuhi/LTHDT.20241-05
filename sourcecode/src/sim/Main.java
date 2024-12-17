@@ -1,9 +1,9 @@
 package sim;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -96,7 +96,9 @@ public class Main {
                                 myView.repaint(); // Trigger repaint to update the view
                                 statsArea.setText("Plants: " + myWorld.getPlantsCount() + "\n" +
                                                    "Herbivores: " + myWorld.getHerbivoresCount() + "\n" +
-                                                   "Carnivores: " + myWorld.getCarnivoresCount() + "\n");
+                                                   "Carnivores: " + myWorld.getCarnivoresCount() + "\n" +
+                                                   "Energy visualization: 10%\n" +
+                                                   "Energy efficiency: 3%\n");
                             }
                         });
                     }
