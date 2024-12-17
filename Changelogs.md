@@ -5,13 +5,13 @@
   + Fixed a bug where animals are stuck when reproduce
 - Added cooldown to organisms reproduction
 - Added GUI with:
-  +Menu to manually configure number of organisms, buttons to start, pause and resume simulation; Help and 
+  + Menu to manually configure number of organisms, buttons to start, pause and resume simulation; Help and 
   Quit button
-  +Simulation screen
-  +Stats panel to show stat
+  + Simulation screen
+  + Stats panel to show stat
 - Name changes:
-  +Simulator from WorldController
-  +WorldRenderer from WorldView
+  + Simulator from WorldController
+  + WorldRenderer from WorldView
 - Added Main class
 
 
