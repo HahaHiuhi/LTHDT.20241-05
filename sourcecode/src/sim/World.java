@@ -10,7 +10,7 @@ public class World {
 
 	public final int WIDTH = 30;
 	public final int HEIGHT = 30;
-	public final int CAP = 700;
+	public final int CAP = 1000;
 	private List<Organism> organisms;
 	private int[][] worldGrid;
 	private int state;

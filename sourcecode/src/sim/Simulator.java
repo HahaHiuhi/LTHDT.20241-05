@@ -36,7 +36,7 @@ public class Simulator {
                 } else if(!isUpdating && !isPaused) { 
                     isUpdating = true; // Indicate that an update is in progress
                     world.update();    // Update the world
-                    view.repaint();; // Update the graphical view (uncomment this line if needed)
+                    view.repaint(); // Update the graphical view (uncomment this line if needed)
                     isUpdating = false; // Indicate that the update has finished
                 }
             }
