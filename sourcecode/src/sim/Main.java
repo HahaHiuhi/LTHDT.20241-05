@@ -80,6 +80,11 @@ public class Main {
                 int plants = Integer.parseInt(fieldP.getText());
                 int herbivores = Integer.parseInt(fieldH.getText());
                 int carnivores = Integer.parseInt(fieldC.getText());
+				if (plants + herbivores + carnivores > myWorld.CAP) {
+					JOptionPane.showMessageDialog(null, "Total number of organisms exceeds the limit of " + myWorld.CAP,
+							"ILLEGAL ORGANISM NUMBER", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
                 myWorld.clearWorld();
                 myWorld.spawnOrganisms(plants, herbivores, carnivores);
                 myController.startSimulation();

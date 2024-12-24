@@ -175,6 +175,11 @@ public class World {
 	}
 	
 	public void clearWorld() {
+		for (int x = 0; x < WIDTH; x++) {
+			for (int y = 0; y < HEIGHT; y++) {
+				unoccupy(x, y);
+			}
+		}
 		organisms.clear();
 		state = CLEARED;
 	}
