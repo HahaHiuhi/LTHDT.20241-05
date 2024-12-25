@@ -1,3 +1,9 @@
+25/12
+- Fixed memory leak in simulation
+- Added birth and death rate calculation
+- Finished GUI
+- Adjusted some stats of simulator
+
 17/12/2024
 - Bug fixes:
   + Organisms now spawn in unoccupied panel
