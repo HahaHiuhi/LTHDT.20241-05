@@ -9,15 +9,21 @@ import java.util.List;
 
 import javax.swing.border.Border;
 
+import Organism.Carnivore;
+import Organism.Herbivore;
+import Organism.Organism;
+import Organism.Plant;
+import World.World;
+
 public class WorldRenderer extends JPanel {
 	
 	private static final long serialVersionUID = -4155452838523149843L;
 	
-	private World world;
 
-    public WorldRenderer(World world) {
-        this.world = world;
-        setPreferredSize(new Dimension(world.WIDTH * 20, world.HEIGHT * 20)); // scale the grid by cell size
+
+    public WorldRenderer() {
+      
+        setPreferredSize(new Dimension(World.WIDTH * 20, World.HEIGHT * 20)); // scale the grid by cell size
         
         // Add a border to the panel
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2); // Black border with width 2
@@ -25,36 +31,56 @@ public class WorldRenderer extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g); // Ensure the background is cleared before painting
+    protected  synchronized void paintComponent(Graphics g) {
+        super.paintComponent(g); // Clear the background
 
         // Set the grid size and cell size
         int cellWidth = 20;
         int cellHeight = 20;
 
-        // Draw the grid (optional)
-        g.setColor(Color.GRAY);
-        for (int i = 0; i <= world.WIDTH; i++) {
-            g.drawLine(i * cellWidth, 0, i * cellWidth, world.HEIGHT * cellHeight);
+        // Enable anti-aliasing for smoother rendering
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Draw the grid (optional, can be commented out for better performance)
+        g2d.setColor(Color.GRAY);
+        for (int i = 0; i <= World.WIDTH; i++) {
+            g2d.drawLine(i * cellWidth, 0, i * cellWidth, World.HEIGHT * cellHeight);
         }
-        for (int i = 0; i <= world.HEIGHT; i++) {
-            g.drawLine(0, i * cellHeight, world.WIDTH * cellWidth, i * cellHeight);
+        for (int i = 0; i <= World.HEIGHT; i++) {
+            g2d.drawLine(0, i * cellHeight, World.WIDTH * cellWidth, i * cellHeight);
         }
 
-        // Get a snapshot of organisms (copy the list to avoid ConcurrentModificationException)
-        List<Organism> organismsSnapshot = new ArrayList<>(world.getOrganisms());
+        // Get a snapshot of organisms to avoid concurrent modification
+        List<Organism> organismsSnapshot;
+        synchronized (World.class) {
+            organismsSnapshot = new ArrayList<>(World.getOrganisms());
+        }
 
-        // Draw the organisms as emojis
-       
+        // Draw the organisms efficiently
         for (Organism organism : organismsSnapshot) {
-        	if(organism instanceof Plant)  g.setColor(Color.GREEN);
-        	else if (organism instanceof Herbivore) g.setColor(Color.BLUE);
-        	else if (organism instanceof Carnivore)  g.setColor(Color.RED);
-            String emoji = organism.getEmoji();
+            // Set the color based on the organism type
+            if (organism instanceof Plant) {
+                g2d.setColor(Color.GREEN);
+            } else if (organism instanceof Herbivore) {
+                g2d.setColor(Color.BLUE);
+            } else if (organism instanceof Carnivore) {
+                g2d.setColor(Color.RED);
+            }
+
+            // Calculate position and size
             int x = organism.getPosX() * cellWidth;
             int y = organism.getPosY() * cellHeight;
-            g.drawString(emoji, x + cellWidth / 4, y + cellHeight / 2); // Center the emoji in the cell
+
+            // Draw the organism (emoji or circle as fallback)
+            String emoji = organism.getEmoji();
+            if (emoji != null && !emoji.isEmpty()) {
+                g2d.drawString(emoji, x + cellWidth / 4, y + cellHeight * 3 / 4); // Emoji centered
+            } else {
+                g2d.fillOval(x + cellWidth / 4, y + cellHeight / 4, cellWidth / 2, cellHeight / 2); // Fallback
+            }
         }
     }
+
 
 }

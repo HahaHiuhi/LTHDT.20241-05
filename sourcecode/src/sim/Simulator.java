@@ -1,81 +1,105 @@
 package sim;
 
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import World.World;
 
-public class Simulator {
-    private World world;         // The ecosystem world object
-    private WorldRenderer view;      // The graphical view
-    private Timer timer;         // Timer to control ticks
-    protected volatile boolean isRunning;
 
-    private static final int DEFAULT_TICK_DURATION = 500; // 500 milliseconds (0.5 seconds)
-    private int tickDuration = DEFAULT_TICK_DURATION;     // Can be adjusted by the user
-    private boolean isUpdating = false; // Flag to track if the world update is in progress
-	private boolean isPaused;
+public  class Simulator {
+	
+	public enum SimulatorStatus {
 
-    // Constructor
-    public Simulator(World world, WorldRenderer view) {
-        this.world = world;
-        this.view = view;
-        this.timer = new Timer(); // Initialize the timer
-        isRunning = false;
+		  RUNNING, STOPPED, PAUSED
+		}
+
+    private volatile SimulatorStatus status;  // Simulation status (RUNNING or STOPPED)
+    private final World world;           // The simulation world object
+    private final WorldRenderer view;    // Renderer for the simulation
+    private SwingWorker<Void, Void> simulationWorker;  // SwingWorker to handle background task
+
+    public Simulator() {
+        this.world = new World();
+        this.view = new WorldRenderer();
+        this.status = SimulatorStatus.STOPPED;
     }
 
-    // Start the simulation
+    // Starts the simulation using a SwingWorker.
+     
     public void startSimulation() {
-        endSimulation(); // Stop any running timers
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        if (simulationWorker != null && !simulationWorker.isDone()) {
+            System.out.println("Simulation is already running.");
+            return;
+        }
+
+        status = SimulatorStatus.RUNNING;
+
+        simulationWorker = new SwingWorker<Void, Void>() {
             @Override
-            public void run() {
-                if (world.isDead()) {
-                    endSimulation(); // Stop when the world is dead
-                    System.out.println("World is dead, simulation stopped.");
-                } else if(!isUpdating && !isPaused) { 
-                    isUpdating = true; // Indicate that an update is in progress
-                    world.update();    // Update the world
-                    view.repaint();; // Update the graphical view (uncomment this line if needed)
-                    isUpdating = false; // Indicate that the update has finished
-                }
-            }
-        }, 0, tickDuration); // First tick runs immediately, then repeats every `tickDuration` milliseconds
-
-        System.out.println("Simulation started with tick duration: " + tickDuration + " ms");
-    }
-
-    // Stop the simulation
-    public void endSimulation() {
-        if (timer != null) {
-            timer.cancel(); // Cancel the current timer
-            System.out.println("Simulation ended.");
-        }
-    }
-
-    // Calculate and print stats about the world
-    public double calculateStats() {
-    	double H = 0, temp = 0;
-        for(int i = 0; i<2; ++i ) {
-        	if(world.c[i+1] != 0) { H = H + (double)(world.c[i]/world.c[i+1]); temp = temp + 1; 
-        }}
-        if (temp > 0) H = H/temp;
-        return H;
-    }
-
+            protected Void doInBackground() throws Exception {
   
-    // Pause the simulation (stop the TimerTask from executing)
-    public void pauseSimulation() {
-        isPaused = true;
-        System.out.println("Simulation paused.");
+                while (status != SimulatorStatus.STOPPED && !world.isDead()) {
+                	if(status == SimulatorStatus.PAUSED) continue;
+                    updateSimulation();  // Perform simulation logic (update world state)
+                    SwingUtilities.invokeLater(() -> renderSimulation());  // Render the world on the EDT
+
+                    try {
+                        Thread.sleep(250);  // Delay
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        System.err.println("Simulation thread interrupted.");
+                        break;
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                // Perform any finalization after the simulation ends
+                System.out.println("Simulation finished or paused.");
+                status = SimulatorStatus.STOPPED;
+            }
+        };
+
+        simulationWorker.execute();  // Start the background task
+        System.out.println("Simulation started.");
     }
 
-    // Resume the simulation (resume TimerTask execution)
-    public void resumeSimulation() {
-        if (isPaused) {
-            isPaused = false;
-            System.out.println("Simulation resumed.");
+    // Stop simulation
+    public void stopSimulation() {
+        status = SimulatorStatus.STOPPED;
+        if (simulationWorker != null) {
+            simulationWorker.cancel(true);  // Stop the SwingWorker task
         }
+        System.out.println("Simulation stopped.");
+    }
+    
+    // Check if running
+    public boolean isSimulationRunning() {
+        return status == SimulatorStatus.RUNNING;
     }
 
+   
+    // Update word
+    protected void updateSimulation() {
+        world.update();  // Update the world state
+        System.out.println("World updated.");
+    }
+
+    
+    //  Renders the simulation state.
+     
+    protected void renderSimulation() {
+        view.repaint();  // Repaint the view on the Event Dispatch Thread (EDT)
+        System.out.println("World rendered.");
+    }
+    
+    public void pauseSimulation() {
+        status = SimulatorStatus.PAUSED;
+    }
+    
+    public void resumeSimulation() {
+        if(status == SimulatorStatus.PAUSED ) status = SimulatorStatus.RUNNING;
+    }
 }
