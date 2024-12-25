@@ -20,11 +20,10 @@ import Organism.Plant;
 import World.World;
 
 public class SimulationScreen {
-     World myWorld ;
- 
-     WorldRenderer myView;
+
+
      
-     Simulator myController;
+    
 
 	 private Timer updateTimer;
 	
@@ -46,7 +45,7 @@ public class SimulationScreen {
          statsArea.setPreferredSize(new Dimension(300, 0)); // Adjust width as needed (300px for example)
          
          // Create the controller for the simulation
-         Simulator myController = new Simulator(myWorld, myView);
+         Simulator mySim = new Simulator();
     	 JButton pauseButton = new JButton("Pause Simulation");
          JButton resumeButton = new JButton("Resume Simulation");
          JButton quitButton = new JButton("Quit");
@@ -59,7 +58,7 @@ public class SimulationScreen {
          pauseButton.addActionListener(new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent e) {
-                 myController.pauseSimulation();
+                 mySim.pauseSimulation();
                  statsArea.append("Simulation paused...\n");
              }
          });
@@ -68,7 +67,7 @@ public class SimulationScreen {
          resumeButton.addActionListener(new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent e) {
-                 myController.resumeSimulation();
+                 mySim.resumeSimulation();
                  statsArea.append("Simulation resumed...\n");
              }
          });
@@ -95,7 +94,7 @@ public class SimulationScreen {
              myWorld.spawnOrganisms(plants, herbivores, carnivores);
 
              // Start the simulation (e.g., by invoking a controller method)
-             myController.startSimulation();
+             mySim.startSimulation();
              statsArea.append("Simulation started...\n");
 
              // Initialize the timer for periodic updates
@@ -145,7 +144,7 @@ public class SimulationScreen {
         	                JOptionPane.YES_NO_OPTION);
 
         	        if (result == JOptionPane.YES_OPTION) {
-        	        	myController.stopSimulation();
+        	        	mySim.stopSimulation();
         	            frame.dispose(); // Close the current simulation screen
         	            new MainMenu(); // Open the main menu
         	        }

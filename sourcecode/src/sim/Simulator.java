@@ -18,15 +18,14 @@ public  class Simulator {
     private final WorldRenderer view;    // Renderer for the simulation
     private SwingWorker<Void, Void> simulationWorker;  // SwingWorker to handle background task
 
-    public Simulator(World world, WorldRenderer view) {
-        this.world = world;
-        this.view = view;
+    public Simulator() {
+        this.world = new World();
+        this.view = new WorldRenderer();
         this.status = SimulatorStatus.STOPPED;
     }
 
-    /**
-     * Starts the simulation using a SwingWorker.
-     */
+    // Starts the simulation using a SwingWorker.
+     
     public void startSimulation() {
         if (simulationWorker != null && !simulationWorker.isDone()) {
             System.out.println("Simulation is already running.");
@@ -45,7 +44,7 @@ public  class Simulator {
                     SwingUtilities.invokeLater(() -> renderSimulation());  // Render the world on the EDT
 
                     try {
-                        Thread.sleep(250);  // Control update frequency (simulating frame rate)
+                        Thread.sleep(250);  // Delay
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                         System.err.println("Simulation thread interrupted.");
@@ -67,9 +66,7 @@ public  class Simulator {
         System.out.println("Simulation started.");
     }
 
-    /**
-     * Stops the simulation safely.
-     */
+    // Stop simulation
     public void stopSimulation() {
         status = SimulatorStatus.STOPPED;
         if (simulationWorker != null) {
@@ -77,25 +74,22 @@ public  class Simulator {
         }
         System.out.println("Simulation stopped.");
     }
-
-    /**
-     * Checks if the simulation is currently running.
-     */
+    
+    // Check if running
     public boolean isSimulationRunning() {
         return status == SimulatorStatus.RUNNING;
     }
 
-    /**
-     * Updates the simulation world.
-     */
+   
+    // Update word
     protected void updateSimulation() {
         world.update();  // Update the world state
         System.out.println("World updated.");
     }
 
-    /**
-     * Renders the simulation state.
-     */
+    
+    //  Renders the simulation state.
+     
     protected void renderSimulation() {
         view.repaint();  // Repaint the view on the Event Dispatch Thread (EDT)
         System.out.println("World rendered.");

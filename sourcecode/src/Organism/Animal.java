@@ -15,7 +15,7 @@ public abstract class Animal extends Organism {
     }
 
     // Method to move the animal to a specific destination
-    public void move(int destX, int destY) {
+    protected void move(int destX, int destY) {
         if (!isTimeToMove()) return; // Check if the animal is allowed to move
         moveFrame = 0; // Reset the move frame counter after moving
 
@@ -100,7 +100,7 @@ public abstract class Animal extends Organism {
     }
 
     // Method to move the animal in a random direction
-    public void move() {
+    protected void move() {
         if (!isTimeToMove()) return; // Check if the animal is allowed to move
 
         Random rand = new Random();
@@ -122,12 +122,12 @@ public abstract class Animal extends Organism {
     }
 
     // Check if the animal is currently hunting
-    public boolean isHunting() {
+    protected boolean isHunting() {
         return this.state == HUNTING;
     }
 
     // Check if the animal is currently mating
-    public boolean isMating() {
+    protected boolean isMating() {
         return this.state == MATING;
     }
     

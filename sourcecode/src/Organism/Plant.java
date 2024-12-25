@@ -21,13 +21,10 @@ public class Plant extends Organism {
 	}
 
 	// Phương thức sản xuất năng lượng qua quang hợp
-	public void produceEnergy() {
+	protected void produceEnergy() {
 		this.energy += ENERGY_PER_TICK; // Tăng năng lượng mỗi tick
 		energyGet += ENERGY_PER_TICK;
 	}
-
-
-
 
 
 	

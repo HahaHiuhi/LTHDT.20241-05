@@ -75,9 +75,7 @@ public class MainMenu {
         });
     }
 
-    /**
-     * Utility method to create a button with consistent properties.
-     */
+    //Create Button
     private JButton createButton(String text) {
         JButton button = new JButton(text);
         button.setAlignmentX(Component.CENTER_ALIGNMENT); // Center align the button
