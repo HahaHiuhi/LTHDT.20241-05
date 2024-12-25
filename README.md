@@ -6,3 +6,4 @@
 ### 4.Trần Bá Công - 20215002
 ### 5.Khổng Minh Cường - 20225603
 ## Chúng em mong được cô giúp đỡ ạ!
+## link video demo: https://drive.google.com/file/d/1LDhLVXuU2IR4n2g8C1sI-2IZv-BW9wYj/view?usp=drive_link
