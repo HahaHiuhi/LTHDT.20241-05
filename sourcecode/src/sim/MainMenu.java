@@ -83,8 +83,5 @@ public class MainMenu {
         return button;
     }
 
-    public static void main(String[] args) {
-        // Launch the main menu
-        new MainMenu();
-    }
+  
 }

@@ -1,7 +1,6 @@
 package sim;
 
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
+
 
 import World.World;
 
@@ -15,62 +14,59 @@ public  class Simulator {
 
     private volatile SimulatorStatus status;  // Simulation status (RUNNING or STOPPED)
     private final World world;           // The simulation world object
-    private final WorldRenderer view;    // Renderer for the simulation
-    private SwingWorker<Void, Void> simulationWorker;  // SwingWorker to handle background task
 
     public Simulator() {
         this.world = new World();
-        this.view = new WorldRenderer();
         this.status = SimulatorStatus.STOPPED;
     }
 
     // Starts the simulation using a SwingWorker.
      
+    private Thread simulationThread;
+
     public void startSimulation() {
-        if (simulationWorker != null && !simulationWorker.isDone()) {
+        if (simulationThread != null && simulationThread.isAlive()) {
             System.out.println("Simulation is already running.");
             return;
         }
 
         status = SimulatorStatus.RUNNING;
 
-        simulationWorker = new SwingWorker<Void, Void>() {
-            @Override
-            protected Void doInBackground() throws Exception {
-  
+        simulationThread = new Thread(() -> {
+            try {
                 while (status != SimulatorStatus.STOPPED && !world.isDead()) {
-                	if(status == SimulatorStatus.PAUSED) continue;
-                    updateSimulation();  // Perform simulation logic (update world state)
-                    SwingUtilities.invokeLater(() -> renderSimulation());  // Render the world on the EDT
-
-                    try {
-                        Thread.sleep(250);  // Delay
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        System.err.println("Simulation thread interrupted.");
-                        break;
+                    if (status == SimulatorStatus.PAUSED) {
+                        Thread.sleep(100); // Small delay to avoid busy-waiting
+                        continue;
                     }
-                }
-                return null;
-            }
 
-            @Override
-            protected void done() {
-                // Perform any finalization after the simulation ends
+                    updateSimulation(); // Perform simulation logic (update world state)
+
+                 
+
+                    // Delay for the simulation loop
+                    Thread.sleep(500);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.err.println("Simulation thread interrupted.");
+            } finally {
+                // Ensure finalization after the thread ends
                 System.out.println("Simulation finished or paused.");
                 status = SimulatorStatus.STOPPED;
             }
-        };
+        });
 
-        simulationWorker.execute();  // Start the background task
+        simulationThread.start(); // Start the simulation thread
         System.out.println("Simulation started.");
     }
+
 
     // Stop simulation
     public void stopSimulation() {
         status = SimulatorStatus.STOPPED;
-        if (simulationWorker != null) {
-            simulationWorker.cancel(true);  // Stop the SwingWorker task
+        if (simulationThread != null) {
+        	simulationThread.interrupt();;  // Stop the SwingWorker task
         }
         System.out.println("Simulation stopped.");
     }
@@ -88,12 +84,7 @@ public  class Simulator {
     }
 
     
-    //  Renders the simulation state.
-     
-    protected void renderSimulation() {
-        view.repaint();  // Repaint the view on the Event Dispatch Thread (EDT)
-        System.out.println("World rendered.");
-    }
+   
     
     public void pauseSimulation() {
         status = SimulatorStatus.PAUSED;

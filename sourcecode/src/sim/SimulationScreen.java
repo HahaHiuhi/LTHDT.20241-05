@@ -14,6 +14,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import Organism.Animal;
 import Organism.Carnivore;
 import Organism.Herbivore;
 import Organism.Plant;
@@ -111,7 +112,7 @@ public class SimulationScreen {
                              "Energy from Sun to Plants: " + Plant.energyGet+ "\n" +
                              "Energy from Plants to Herbivores: " + Herbivore.energyGet + "\n" +
                              "Energy from Herbivores Carnivores: " + Carnivore.energyGet + "\n" +
-                             "Plant birth rate: " + (double)100*Plant.birth/Plant.total + "%\n"+
+                             "Plant birth rate: " +  String.format("%.2f",(double)100*Plant.birth/Plant.total) + "%\n"+
                              "Herbivore birth rate: " + String.format("%.2f", (double)100 * Herbivore.birth / Herbivore.total) + "%\n" +
                              "Carnivore birth rate: " + String.format("%.2f", (double)100 * Carnivore.birth / Carnivore.total) + "%\n" +
                              "Plant death rate: " + String.format("%.2f", (double)100 * Plant.death / Plant.total) + "%\n" +
@@ -154,10 +155,8 @@ public class SimulationScreen {
      }
      
      protected static void setBirthDeath(int x) {
-    	 World.birthDeath = x;
+    	 Animal.birthDeath = x;
      }
      
-     public static void main(String[] args) {
-         new SimulationScreen();
-     } 
+    
  }

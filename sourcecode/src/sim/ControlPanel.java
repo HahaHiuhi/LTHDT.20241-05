@@ -154,7 +154,4 @@ public class ControlPanel extends JPanel {
 
 
 
-    public static void main(String[] args) {
-        new ControlPanel();
-    }
 }

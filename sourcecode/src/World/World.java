@@ -12,10 +12,9 @@ import Organism.Organism;
 import Organism.Plant;
 
 public class World {
-	public final static int DEAD = 0, HEALTHY = 1, CLEARED = 2;
+	public final static int DEAD = 0, HEALTHY = 1;
 	public final static int WIDTH = 30, HEIGHT = 30;
 	public final static int CAP = 700;
-	public static int birthDeath = 0;
 	private static List<Organism> organisms;
 	private int state;
  
@@ -43,9 +42,7 @@ public class World {
 		return state == DEAD;
 	}
 
-	public void setState(int state) {
-		this.state = state;
-	}
+
 
 
 	
@@ -142,7 +139,6 @@ public class World {
 	
 	public synchronized void clearWorld() {
 		organisms = new ArrayList<>(); // Turns out the clear() method keeps the list in memory, causing memory leaks
-	    state = CLEARED;
 	    Organism.resetStats();
 	}
 

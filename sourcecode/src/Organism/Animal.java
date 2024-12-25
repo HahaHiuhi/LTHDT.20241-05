@@ -8,7 +8,7 @@ import World.WorldMap;
 public abstract class Animal extends Organism {
 
     protected int moveFrame = 0; // Tracks the number of frames since the last move (used to regulate movement speed)
-
+    public static int birthDeath = 0;
     // Constructor: Initialize an animal at a specific position with a given type and initial energy
     public Animal(int x, int y, int initialEnergy, int type) {
         super(initialEnergy, x, y, type);
@@ -87,7 +87,7 @@ public abstract class Animal extends Organism {
             if (canReproduce()) {
             	int chance = rand.nextInt(100); // Generate a random number between 0 and 99
 
-            	if (chance < 50 + World.birthDeath) { //
+            	if (chance < 50 + birthDeath) { //
             	    state = MATING;
             	} else { 
             	    state = HUNTING;
@@ -103,20 +103,11 @@ public abstract class Animal extends Organism {
     protected void move() {
         if (!isTimeToMove()) return; // Check if the animal is allowed to move
 
-        Random rand = new Random();
-        int[] dx = { -1, 1, 0, 0 }; // Possible x-direction (left, right)
-        int[] dy = { 0, 0, -1, 1 }; // Possible y-direction (up, down)
-
-        // Pick a random direction
-        int direction = rand.nextInt(4);
-
-        // Calculate the new position
-        int newX = this.posX + dx[direction];
-        int newY = this.posY + dy[direction];
+        int [] direction = this.chooseDirection();
 
         // Ensure the new position is within bounds of the world
-        if (newX >= 0 && newX < World.WIDTH && newY >= 0 && newY < World.HEIGHT) {
-            move(newX, newY); // Move to the new position
+        if (direction[0] >= 0 && direction[0] < World.WIDTH && direction[1] >= 0 && direction[1] < World.HEIGHT) {
+            move(direction[0], direction[1]); // Move to the new position
         }
         moveFrame = 0; // Reset the move frame counter
     }
