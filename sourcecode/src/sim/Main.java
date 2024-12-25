@@ -89,7 +89,6 @@ public class Main {
                 if(timer != null && timer.isRunning()){
                     timer.stop();
                     myWorld.clearWorld();
-                    System.gc();
                     statsArea.append("Simulation stoped\n");
                     return;
                 }else if(timer != null && !timer.isRunning()){
@@ -97,7 +96,6 @@ public class Main {
                     int herbivores = Integer.parseInt(fieldH.getText());
                     int carnivores = Integer.parseInt(fieldC.getText());
                     myWorld.clearWorld();
-                    System.gc();
                     myWorld.spawnOrganisms(plants, herbivores, carnivores);
                     myController.startSimulation();
                     timer.restart();

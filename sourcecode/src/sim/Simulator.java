@@ -54,10 +54,13 @@ public class Simulator {
     }
 
     // Calculate and print stats about the world
-    public void calculateStats() {
-        int numOrganisms = world.getOrganisms().size(); // Get the number of organisms
-        System.out.println("Number of organisms: " + numOrganisms);
-        // Add other statistics like total energy, organisms by type, etc.
+    public double calculateStats() {
+    	double H = 0, temp = 0;
+        for(int i = 0; i<2; ++i ) {
+        	if(world.c[i+1] != 0) { H = H + (double)(world.c[i]/world.c[i+1]); temp = temp + 1; 
+        }}
+        if (temp > 0) H = H/temp;
+        return H;
     }
 
   
